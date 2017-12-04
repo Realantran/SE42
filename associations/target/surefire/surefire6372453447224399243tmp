@@ -1,0 +1,7 @@
+#surefire
+#Mon Dec 04 13:30:33 CET 2017
+maven.ext.class.path=C\:\\Program Files\\NetBeans 8.2\\java\\maven-nblib\\netbeans-eventspy.jar
+user.dir=C\:\\Users\\Bob\\Documents\\PTS43\\SE42\\associations
+file.encoding=UTF-8
+localRepository=C\:\\Users\\Bob\\.m2\\repository
+basedir=C\:\\Users\\Bob\\Documents\\PTS43\\SE42\\associations
