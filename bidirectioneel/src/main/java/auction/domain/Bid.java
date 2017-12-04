@@ -2,9 +2,11 @@ package auction.domain;
 
 import java.util.Objects;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import nl.fontys.util.FontysTime;
@@ -17,7 +19,7 @@ public class Bid {
     @GeneratedValue
     private Long id;
     
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private FontysTime time;
     
     @ManyToOne
@@ -25,14 +27,27 @@ public class Bid {
     
     @OneToOne
     private Money amount;
+    
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private Item bidItem;
 
-    public Bid(User buyer, Money amount) {
+     public Bid(User buyer, Money amount, Item bidItem) {
         this.buyer = buyer;
         this.amount = amount;
+        this.bidItem = bidItem;
     }
     
     public Bid(){
         
+    }
+    
+    public Item getItemBid(){
+        return this.bidItem;
+    }
+    
+    public void setItemBid(Item bidItem){
+        this.bidItem = bidItem;
     }
 
     public FontysTime getTime() {

@@ -2,16 +2,14 @@ package nl.fontys.util;
 
 import java.sql.Time;
 import java.util.TimeZone;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+@Embeddable
 public class FontysTime {
-    
-        @Id
-        @GeneratedValue
-        private Long id;
+       
 	private long seconds;
 
 	public FontysTime() {

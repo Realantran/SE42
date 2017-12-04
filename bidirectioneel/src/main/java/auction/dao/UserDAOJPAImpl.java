@@ -6,6 +6,7 @@
 package auction.dao;
 
 import auction.domain.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -26,7 +27,9 @@ public class UserDAOJPAImpl implements UserDAO {
     @Override
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
-        return ((Long) q.getSingleResult()).intValue();
+        int returnValue = ((Long) q.getSingleResult()).intValue();
+        em.close();
+        return returnValue;
     }
 
     @Override
@@ -42,7 +45,9 @@ public class UserDAOJPAImpl implements UserDAO {
     @Override
     public List<User> findAll() {
         Query q = em.createNamedQuery("User.getAll", User.class);
-        return q.getResultList();
+        List<User> returnUsers = new ArrayList(q.getResultList());
+        em.close();
+        return returnUsers;
     }
 
     @Override
@@ -50,7 +55,9 @@ public class UserDAOJPAImpl implements UserDAO {
         try {
             Query q = em.createNamedQuery("User.findByEmail", User.class);
             q.setParameter("email", email);
-            return (User) q.getSingleResult();
+            User returnUser = (User) q.getSingleResult();
+            em.close();
+            return returnUser;
         } catch (NoResultException e) {
             return null;
         }

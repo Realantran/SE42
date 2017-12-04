@@ -30,18 +30,19 @@ public class Item implements Comparable {
 
     @ManyToOne
     private User seller;
-    
+
     @OneToOne(cascade = CascadeType.PERSIST)
     private Category category;
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "bidItem")
     private Bid highest;
 
     public Item(User seller, Category category, String description) {
         this.seller = seller;
         this.category = category;
         this.description = description;
+        seller.addItem(this);
     }
 
     public Item() {
@@ -72,11 +73,9 @@ public class Item implements Comparable {
         if (highest != null && highest.getAmount().compareTo(amount) >= 0) {
             return null;
         }
-        highest = new Bid(buyer, amount);
+        highest = new Bid(buyer, amount,this);
         return highest;
     }
-
-    
 
     @Override
     public int hashCode() {
@@ -121,6 +120,6 @@ public class Item implements Comparable {
     @Override
     public int compareTo(Object o) {
         Item compareItem = (Item) o;
-        return this.id.compareTo(compareItem.getId());    
+        return this.id.compareTo(compareItem.getId());
     }
 }
