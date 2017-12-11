@@ -3,6 +3,7 @@ package auction.domain;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,35 +19,37 @@ public class Bid {
     @Id
     @GeneratedValue
     private Long id;
-    
+
+    @Embedded
     @OneToOne
     private FontysTime time;
-    
+
     @ManyToOne
     private User buyer;
-    
+
+    @Embedded
     @OneToOne
     private Money amount;
-    
+
     @OneToOne
     @JoinColumn(nullable = false)
     private Item bidItem;
 
-     public Bid(User buyer, Money amount, Item bidItem) {
+    public Bid(User buyer, Money amount, Item bidItem) {
         this.buyer = buyer;
         this.amount = amount;
         this.bidItem = bidItem;
     }
-    
-    public Bid(){
-        
+
+    public Bid() {
+
     }
-    
-    public Item getItemBid(){
+
+    public Item getItemBid() {
         return this.bidItem;
     }
-    
-    public void setItemBid(Item bidItem){
+
+    public void setItemBid(Item bidItem) {
         this.bidItem = bidItem;
     }
 
@@ -97,5 +100,5 @@ public class Bid {
         }
         return true;
     }
-    
+
 }

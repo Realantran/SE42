@@ -28,7 +28,6 @@ public class UserDAOJPAImpl implements UserDAO {
     public int count() {
         Query q = em.createNamedQuery("User.count", User.class);
         int returnValue = ((Long) q.getSingleResult()).intValue();
-        em.close();
         return returnValue;
     }
 
@@ -46,7 +45,6 @@ public class UserDAOJPAImpl implements UserDAO {
     public List<User> findAll() {
         Query q = em.createNamedQuery("User.getAll", User.class);
         List<User> returnUsers = new ArrayList(q.getResultList());
-        em.close();
         return returnUsers;
     }
 
@@ -56,7 +54,6 @@ public class UserDAOJPAImpl implements UserDAO {
             Query q = em.createNamedQuery("User.findByEmail", User.class);
             q.setParameter("email", email);
             User returnUser = (User) q.getSingleResult();
-            em.close();
             return returnUser;
         } catch (NoResultException e) {
             return null;

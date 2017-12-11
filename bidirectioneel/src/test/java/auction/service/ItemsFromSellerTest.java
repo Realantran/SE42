@@ -126,29 +126,31 @@ public class ItemsFromSellerTest {
     }
      @Test
     public void Opdracht2() {
-        //Aanmaken van een item
-        Category category = new Category("cat100");
-        User user = registrationMgr.registerUser("Kappa@kappa.nl");
-        Item item = sellerMgr.offerItem(user, category, "cat1");
+        User user = registrationMgr.registerUser("Test@Test.nl");
+        Category category = new Category("TestCategory");
+        Item item = sellerMgr.offerItem(user, category, "TestCat");
 
-        //Kijken of het aanmaken gelukt is
         assertEquals(1, user.numberOfOfferedItems());
         assertNull(item.getHighestBid());
+        
+        Money testMoneyLow = new Money(10, "euro");
+        Money testMoneyMiddle = new Money(15, "euro");
+        Money testMoneyHigh = new Money(20,"euro");
 
-        //Aanmaken van de BIDS
-        Bid bid = auctionMgr.newBid(item, user, new Money(10, "Euro"));
-        Bid bid1 = auctionMgr.newBid(item, user, new Money(20, "Euro"));
-        Bid bid2 = auctionMgr.newBid(item, user, new Money(15, "Euro"));
+        Bid testBid1 = auctionMgr.newBid(item, user,testMoneyLow );
+        Bid testBid2 = auctionMgr.newBid(item, user, testMoneyHigh);
+        Bid testBid3 = auctionMgr.newBid(item, user, testMoneyMiddle);
+        
+         System.out.println(testBid2.getAmount());
 
-        //Test na de gemaakt bid, kijken of het echt bestaat
         assertNotNull(item.getHighestBid());
-        assertEquals(item, bid.getItemBid());
-        assertEquals(user, bid.getBuyer());
-        assertEquals(bid.getAmount(), new Money(10, "Euro"));
-        assertEquals(bid1.getAmount(), new Money(20, "Euro"));
-        assertEquals( bid1.getBuyer(), user);
-        assertEquals(bid1.getItemBid(), item);
-        assertNull(bid2);
-        assertEquals(item.getHighestBid().getAmount(), new Money(20, "Euro"));
+        assertEquals(item, testBid1.getItemBid());
+        assertEquals(user, testBid1.getBuyer());
+        assertEquals(testBid1.getAmount(), testMoneyLow);
+        assertEquals(testBid2.getAmount(), testMoneyHigh);
+        assertEquals( testBid2.getBuyer(), user);
+        assertEquals(testBid2.getItemBid(), item);
+        assertNull(testBid3);
+        assertEquals(item.getHighestBid().getAmount(), testBid2.getAmount());
     }
 }

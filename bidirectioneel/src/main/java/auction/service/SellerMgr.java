@@ -27,7 +27,6 @@ public class SellerMgr {
         em.getTransaction().begin();
         itemDAO.create(item);
         em.getTransaction().commit();
-        em.close();
         return item;
     }
 
@@ -39,12 +38,11 @@ public class SellerMgr {
     public boolean revokeItem(Item item) {
         EntityManager em = emf.createEntityManager();
         ItemDAO itemDAO = new ItemDAOJPAImpl(em);
-        Item databaseItem = itemDAO.find(item.getId());
         em.getTransaction().begin();
+        Item databaseItem = itemDAO.find(item.getId());
         if (databaseItem.getHighestBid() == null) {
             itemDAO.remove(databaseItem);
             em.getTransaction().commit();
-            em.close();
             return true;
         }
         return false;

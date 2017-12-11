@@ -29,7 +29,6 @@ public class ItemDAOJPAImpl implements ItemDAO {
     public int count() {
         Query q = em.createNamedQuery("Item.count", Item.class);
         int returnValue = ((Long) q.getSingleResult()).intValue();
-        em.close();
         return returnValue;
     }
 
@@ -49,7 +48,6 @@ public class ItemDAOJPAImpl implements ItemDAO {
             Query q = em.createNamedQuery("Item.findByID", Item.class);
             q.setParameter("id", id);
             Item returnItem = (Item) q.getSingleResult();
-            em.close();
             return returnItem;
         } catch (NoResultException e) {
             return null;
@@ -60,7 +58,6 @@ public class ItemDAOJPAImpl implements ItemDAO {
     public List<Item> findAll() {
         Query q = em.createNamedQuery("Item.getAll", Item.class);
         List<Item> returnItems = new ArrayList(q.getResultList());
-        em.close();
         return returnItems;
     }
 
@@ -71,7 +68,6 @@ public class ItemDAOJPAImpl implements ItemDAO {
             Query q = em.createNamedQuery("Item.findByDescription", Item.class);
             q.setParameter("description", description);
             returnItems = new ArrayList<>(q.getResultList());
-            em.close();
         } catch (NoResultException e) {
             return null;
         }

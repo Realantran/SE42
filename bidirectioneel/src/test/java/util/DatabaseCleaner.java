@@ -13,7 +13,7 @@ import nl.fontys.util.Money;
 public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
-        Bid.class,Item.class,User.class,Category.class
+        Bid.class,Item.class,User.class
     };
     private final EntityManager em;
 

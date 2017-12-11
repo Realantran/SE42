@@ -54,7 +54,6 @@ public class AuctionMgr {
         try {
             itemDAO.edit(item);
             em.getTransaction().commit();
-            em.close();
             return bid;
 
         } catch (Exception ex) {

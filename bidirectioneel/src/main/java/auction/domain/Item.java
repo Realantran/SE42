@@ -1,7 +1,11 @@
 package auction.domain;
 
 import java.util.Objects;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,7 +35,11 @@ public class Item implements Comparable {
     @ManyToOne
     private User seller;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "description",
+                column = @Column(name = "category_description"))
+    })
     private Category category;
     private String description;
 
@@ -73,7 +81,7 @@ public class Item implements Comparable {
         if (highest != null && highest.getAmount().compareTo(amount) >= 0) {
             return null;
         }
-        highest = new Bid(buyer, amount,this);
+        highest = new Bid(buyer, amount, this);
         return highest;
     }
 

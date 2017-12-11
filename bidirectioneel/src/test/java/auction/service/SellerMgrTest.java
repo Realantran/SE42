@@ -73,11 +73,6 @@ public class SellerMgrTest {
         boolean res2 = sellerMgr.revokeItem(item2);
         assertFalse(res2);
         int count2 = auctionMgr.findItemByDescription(omsch2).size();
-        assertEquals(1, count2);
-        
-        
-        
-        
+        assertEquals(1, count2);         
     }
-
 }

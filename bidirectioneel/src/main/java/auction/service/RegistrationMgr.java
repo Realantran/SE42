@@ -11,16 +11,16 @@ import javax.persistence.Persistence;
 
 public class RegistrationMgr {
 
-
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("dbi341211");
-    
+
     public RegistrationMgr() {
-       
+
     }
 
     /**
      * Registreert een gebruiker met het als parameter gegeven e-mailadres, mits
      * zo'n gebruiker nog niet bestaat.
+     *
      * @param email
      * @return Een Userobject dat geïdentificeerd wordt door het gegeven
      * e-mailadres (nieuw aangemaakt of reeds bestaand). Als het e-mailadres
@@ -29,18 +29,17 @@ public class RegistrationMgr {
     public User registerUser(String email) {
         EntityManager em = emf.createEntityManager();
         UserDAO userDAO = new UserDAOJPAImpl(em);
+        em.getTransaction().begin();
         if (!email.contains("@")) {
             return null;
         }
         User user = userDAO.findByEmail(email);
-        em.getTransaction().begin();
         if (user != null) {
             return user;
         }
         user = new User(email);
         userDAO.create(user);
         em.getTransaction().commit();
-        em.close();
         return user;
     }
 
