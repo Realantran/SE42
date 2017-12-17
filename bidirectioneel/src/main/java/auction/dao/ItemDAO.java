@@ -20,8 +20,9 @@ public interface ItemDAO {
     /**
      * Merge the state of the given item into persistant context. If the item did not exist an IllegalArgumentException is thrown
      * @param item
+     * @return 
      */
-    void edit(Item item);
+     Item edit(Item item);
 
     /**
      *
@@ -29,6 +30,7 @@ public interface ItemDAO {
      * @return the found entity instance or null if the entity does not exist
      */
     Item find(Long id);
+    
 
     /**
      *

@@ -9,6 +9,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -16,6 +18,7 @@ import javax.persistence.OneToOne;
 import nl.fontys.util.Money;
 
 @Entity
+@Inheritance (strategy = InheritanceType.JOINED) 
 @NamedQueries({
     @NamedQuery(name = "Item.getAll", query = "select I from Item as I")
     ,
@@ -26,7 +29,7 @@ import nl.fontys.util.Money;
     @NamedQuery(name = "Item.findByID", query = "select I from Item as I where I.id = :id")
 
 })
-public class Item implements Comparable {
+public abstract class Item implements Comparable {
 
     @Id
     @GeneratedValue
@@ -52,6 +55,17 @@ public class Item implements Comparable {
         this.description = description;
         seller.addItem(this);
     }
+
+    public Item(Long id, User seller, Category category, String description, Bid highest) {
+        this.id = id;
+        this.seller = seller;
+        this.category = category;
+        this.description = description;
+        this.highest = highest;
+        seller.addItem(this);
+    }
+    
+    
 
     public Item() {
 

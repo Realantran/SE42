@@ -5,6 +5,7 @@
  */
 package auction.dao;
 
+import auction.domain.Furniture;
 import auction.domain.Item;
 import auction.domain.User;
 import java.util.ArrayList;
@@ -38,21 +39,27 @@ public class ItemDAOJPAImpl implements ItemDAO {
     }
 
     @Override
-    public void edit(Item item) {
-        em.merge(item);
+    public Item edit(Item item) {
+       return em.merge(item);
+        
     }
 
     @Override
     public Item find(Long id) {
         try {
-            Query q = em.createNamedQuery("Item.findByID", Item.class);
-            q.setParameter("id", id);
-            Item returnItem = (Item) q.getSingleResult();
-            return returnItem;
+//            Query q = em.createNamedQuery("Item.findByID", Item.class);
+//            q.setParameter("id", id);
+//            Item returnItem = (Item) q.getSingleResult();
+           
+            return em.find(Item.class, id);
+            
+            
         } catch (NoResultException e) {
             return null;
         }
     }
+   
+    
 
     @Override
     public List<Item> findAll() {

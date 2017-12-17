@@ -52,9 +52,9 @@ public class AuctionMgr {
         em.getTransaction().begin();
         Bid bid = item.newBid(buyer, amount);
         try {
-            itemDAO.edit(item);
+          Item it =  itemDAO.edit(item);
             em.getTransaction().commit();
-            return bid;
+            return it.getHighestBid();
 
         } catch (Exception ex) {
             System.out.println(ex);
