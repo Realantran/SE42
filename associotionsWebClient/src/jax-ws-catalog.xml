@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8100/DBCleaner?wsdl" uri="wsdl/localhost_8100/DBCleaner.wsdl"/>
+    <system systemId="http://localhost:8100/DBCleaner?xsd=1" uri="wsdl/localhost_8100/DBCleaner.xsd_1.xsd"/>
+    <system systemId="http://localhost:8100/Auction?wsdl" uri="wsdl/localhost_8100/Auction.wsdl"/>
+    <system systemId="http://localhost:8100/Auction?xsd=1" uri="wsdl/localhost_8100/Auction.xsd_1.xsd"/>
+    <system systemId="http://localhost:8100/Registration?wsdl" uri="wsdl/localhost_8100/Registration.wsdl"/>
+    <system systemId="http://localhost:8100/Registration?xsd=1" uri="wsdl/localhost_8100/Registration.xsd_1.xsd"/>
+</catalog>
