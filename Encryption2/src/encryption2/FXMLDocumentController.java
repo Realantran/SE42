@@ -5,7 +5,9 @@
  */
 package encryption2;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.security.SecureRandom;
@@ -66,20 +68,58 @@ public class FXMLDocumentController implements Initializable {
                 try {
                     FileOutputStream fos = new FileOutputStream("Encryption2");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.write(salt);
-                    oos.write(cipherBytes);
+                    oos.writeObject(salt);
+                    oos.writeObject(cipherBytes);
                     oos.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 JOptionPane.showMessageDialog(null, "Encryptie gelukt!", null, JOptionPane.INFORMATION_MESSAGE);
+                txtArea.clear();
+                txtPassword.clear();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Vul een password en text in!", null, JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    @FXML
+    private void decrypt(ActionEvent event) {
+        
+        if (!txtPassword.getText().isEmpty()) {
+
+            char[] password = txtPassword.getText().toCharArray();
+
+             
+            byte[] eCipherbytes = null;
+            SecretKey secret;
+            try {
+                FileInputStream ip = new FileInputStream("Encryption2");
+              
+                ObjectInputStream ois = new ObjectInputStream(ip);
+               byte[] eSalt = (byte[]) ois.readObject();
+                eCipherbytes = (byte[]) ois.readObject();
+             
+                if (eSalt != null) {
+                    secret = getKey(password, eSalt);
+                     String content = decipherContent(secret,eCipherbytes);
+                    
+                     if(content != null){
+                         txtArea.setText(content);
+                         txtPassword.clear();
+                         emptyPassword(password);
+                     }
+                }
+               
+
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+
+        }
+
     }
 
     private SecretKey createKey(char[] password) {
@@ -98,17 +138,46 @@ public class FXMLDocumentController implements Initializable {
         return secretKey;
     }
 
+    private SecretKey getKey(char[] password, byte[] salt) {
+        SecretKey secretKey = null;
+        try {
+
+            pbeParamSpec = new PBEParameterSpec(salt, iterationCount);
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
+            SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+            secretKey = keyFac.generateSecret(pbeKeySpec);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return secretKey;
+    }
+
     private byte[] cipherContent(SecretKey secretKey, String content) {
         byte[] cipherBytes = null;
         try {
             Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParamSpec);
+
             cipherBytes = cipher.doFinal(content.getBytes());
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return cipherBytes;
+    }
+
+    private String decipherContent(SecretKey secretKey, byte[] cipherBytes) {
+        byte[] content;
+        try {
+            Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
+
+            content = cipher.doFinal(cipherBytes);
+            return new String(content);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     private void emptyPassword(char[] password) {
